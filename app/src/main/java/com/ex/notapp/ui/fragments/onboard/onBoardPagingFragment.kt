@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieDrawable
 import com.ex.notapp.R
 import com.ex.notapp.databinding.FragmentOnBoardPagingBinding
@@ -54,10 +55,11 @@ class onBoardPagingFragment : Fragment() {
 
             2 -> {
               tvFirst.text = "Куча функций и интересных фишек"
-                tvStart.visibility = View.VISIBLE
                 lottieView.setAnimation("lottie3.json")
                 lottieView.repeatCount = LottieDrawable.INFINITE
                 lottieView.playAnimation()
+
+
 
             }
         }
