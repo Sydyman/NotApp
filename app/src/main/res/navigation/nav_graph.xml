@@ -23,5 +23,14 @@
         android:id="@+id/notFragment"
         android:name="com.ex.notapp.ui.fragments.onboard.note.NotFragment"
         android:label="fragment_not"
-        tools:layout="@layout/fragment_not" />
+        tools:layout="@layout/fragment_not" >
+        <action
+            android:id="@+id/action_notFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.ex.notapp.ui.fragments.onboard.note.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" />
 </navigation>
