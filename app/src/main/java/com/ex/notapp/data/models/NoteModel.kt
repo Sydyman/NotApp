@@ -9,7 +9,6 @@ import androidx.room.PrimaryKey
 data class NoteModel(
 
     val title: String,
-
     val description: String,
     @ColumnInfo(name = "color")
     val color: String

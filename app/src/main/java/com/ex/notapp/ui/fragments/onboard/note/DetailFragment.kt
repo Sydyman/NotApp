@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ import java.util.Locale
 class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
+    private var noteId: Int = -1
 
 
     override fun onCreateView(
@@ -34,8 +36,25 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        updateNote()
         setUpListeners()
         getRealTime()
+
+    }
+
+    private fun updateNote() {
+        arguments?.let {
+            noteId = it.getInt("noteId", -1)
+        }
+        if (noteId != -1) {
+            val argsNote = App.appDatabase?.noteDao()?.getById(noteId)
+            argsNote?.let { model ->
+                val color = Color.parseColor(model.color)
+                binding.etTitle.setText(model.title)
+                binding.etDescription.setText(model.description)
+                binding.detailFragment.setBackgroundColor(color)
+            }
+        }
     }
 
 
@@ -51,10 +70,11 @@ class DetailFragment : Fragment() {
                 Color.TRANSPARENT
             }
             val fragmentColor = String.format("#%06X", (0xFFFFFF and color))
-            //код по большей части писал я сам, спасибо ютубу, минимум chatGpt)
-
-
-            App.appDatabase?.noteDao()?.insert(NoteModel(etTitle, etDescription, fragmentColor))
+            if (noteId != -1) {
+                App.appDatabase?.noteDao()?.updateNote(NoteModel(etTitle, etDescription, fragmentColor))
+            } else {
+                App.appDatabase?.noteDao()?.insert(NoteModel(etTitle, etDescription, fragmentColor))
+            }
             findNavController().navigateUp()
         }
         binding.btnBack.setOnClickListener {
@@ -63,8 +83,6 @@ class DetailFragment : Fragment() {
         binding.fon1.setOnClickListener {
             binding.detailFragment.setBackgroundColor(Color.parseColor("#0E0C0C"))
             binding.dot.translationX = 0f
-
-
         }
         binding.fon2.setOnClickListener {
             binding.detailFragment.setBackgroundColor(Color.parseColor("#EBE6E6"))

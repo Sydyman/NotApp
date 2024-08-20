@@ -32,5 +32,9 @@
         android:id="@+id/detailFragment"
         android:name="com.ex.notapp.ui.fragments.onboard.note.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="noteId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

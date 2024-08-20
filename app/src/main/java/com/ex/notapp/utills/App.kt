@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ex.notapp.data.db.daos.AppDatabase
+import com.ex.notapp.data.db.daos.MIGRATION_2_3
 
 
 class App : Application() {
@@ -26,10 +27,8 @@ class App : Application() {
         if (appDatabase == null) {
             appDatabase = applicationContext?.let {
                 Room.databaseBuilder(
-                    it,
-                    AppDatabase::class.java,
-                    "note.database"
-                ).fallbackToDestructiveMigrationFrom(1, 2).allowMainThreadQueries().build()
+                    it, AppDatabase::class.java, "note.database"
+                ).addMigrations(MIGRATION_2_3).allowMainThreadQueries().build()
             }
 
         }

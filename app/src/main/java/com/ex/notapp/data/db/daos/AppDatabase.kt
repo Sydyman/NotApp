@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.ex.notapp.converter.Converters
 import com.ex.notapp.data.models.NoteModel
 
-@Database(entities = [NoteModel::class], version = 2)
+@Database(entities = [NoteModel::class], version = 3)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 
