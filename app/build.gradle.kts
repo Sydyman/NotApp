@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.devtools.ksp")
     id ("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.google.gms.google.services)
 
 
 }
@@ -57,6 +58,7 @@ dependencies {
     implementation ("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation ("androidx.navigation:navigation-ui-ktx:$navVersion")
     implementation ("com.google.android.material:material:1.9.0")
+    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -65,5 +67,9 @@ dependencies {
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 
 }

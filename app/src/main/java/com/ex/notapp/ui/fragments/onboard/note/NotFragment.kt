@@ -1,11 +1,11 @@
 package com.ex.notapp.ui.fragments.onboard.note
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,18 +18,18 @@ import com.ex.notapp.interfaces.OnClickItem
 import com.ex.notapp.utills.App
 import com.ex.notapp.utills.PreferenceHelper
 
-
 class NotFragment : Fragment(), OnClickItem {
 
     private lateinit var binding: FragmentNotBinding
     private var noteAdapter = NoteAdapter(this, this)
-
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentNotBinding.inflate(inflater, container, false)
+        sharedPreferences = PreferenceHelper.customPrefs(requireContext(), "layout_pref")
         return binding.root
     }
 
@@ -38,25 +38,26 @@ class NotFragment : Fragment(), OnClickItem {
         initialize()
         getData()
         setUpListeners()
-
-
     }
 
-
     private fun initialize() {
-        binding.rvNote.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = noteAdapter
+        val isGridLayout = sharedPreferences.getBoolean("isGridLayout", false)
+        if (isGridLayout) {
+            binding.rvNote.layoutManager = GridLayoutManager(requireContext(), 2)
+            binding.changeForm.visibility = View.INVISIBLE
+            binding.changeForm2.visibility = View.VISIBLE
+        } else {
+            binding.rvNote.layoutManager = LinearLayoutManager(requireContext())
+            binding.changeForm.visibility = View.VISIBLE
+            binding.changeForm2.visibility = View.INVISIBLE
         }
-
-
+        binding.rvNote.adapter = noteAdapter
     }
 
     private fun getData() {
         App.appDatabase?.noteDao()?.getAll()?.observe(viewLifecycleOwner) {
             noteAdapter.submitList(it)
         }
-
     }
 
     private fun setUpListeners() {
@@ -64,17 +65,21 @@ class NotFragment : Fragment(), OnClickItem {
             findNavController().navigate(R.id.action_notFragment_to_detailFragment)
         }
         binding.changeForm.setOnClickListener {
-            binding.rvNote.layoutManager = GridLayoutManager(context, 2)
-            binding.changeForm.isClickable = false
+            binding.rvNote.layoutManager = GridLayoutManager(requireContext(), 2)
+            saveLayoutPreference(true)
             binding.changeForm.visibility = View.INVISIBLE
             binding.changeForm2.visibility = View.VISIBLE
         }
         binding.changeForm2.setOnClickListener {
-            binding.rvNote.layoutManager = LinearLayoutManager(context)
-            binding.changeForm.isClickable = true
+            binding.rvNote.layoutManager = LinearLayoutManager(requireContext())
+            saveLayoutPreference(false)
             binding.changeForm.visibility = View.VISIBLE
             binding.changeForm2.visibility = View.INVISIBLE
         }
+    }
+
+    private fun saveLayoutPreference(isGridLayout: Boolean) {
+        sharedPreferences.edit().putBoolean("isGridLayout", isGridLayout).apply()
     }
 
     override fun onLongClickItem(noteModel: NoteModel) {
@@ -83,11 +88,9 @@ class NotFragment : Fragment(), OnClickItem {
             setTitle("Удалить Запись?")
             setPositiveButton("Нет") { dialog, _ ->
                 dialog.cancel()
-
             }
-            setNegativeButton("да") { dialog, _ ->
+            setNegativeButton("Да") { dialog, _ ->
                 App.appDatabase?.noteDao()?.deleteNote(noteModel)
-
             }.show()
         }
         builder.create()
@@ -97,6 +100,4 @@ class NotFragment : Fragment(), OnClickItem {
         val action = NotFragmentDirections.actionNotFragmentToDetailFragment(noteModel.id)
         findNavController().navigate(action)
     }
-
-
 }

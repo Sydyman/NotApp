@@ -25,12 +25,15 @@ class App : Application() {
 
     private fun getInstance(): AppDatabase? {
         if (appDatabase == null) {
-            appDatabase = applicationContext?.let {
-                Room.databaseBuilder(
-                    it, AppDatabase::class.java, "note.database"
-                ).addMigrations(MIGRATION_2_3).allowMainThreadQueries().build()
+            synchronized(App::class.java) {
+                if (appDatabase == null) {
+                    appDatabase = Room.databaseBuilder(
+                        applicationContext, AppDatabase::class.java, "note.database"
+                    ).fallbackToDestructiveMigration()
+                        .allowMainThreadQueries()
+                        .build()
+                }
             }
-
         }
         return appDatabase
     }

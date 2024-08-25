@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph.xml"
-    app:startDestination="@id/onBoardFragment">
+    app:startDestination="@id/signFragment">
 
     <fragment
         android:id="@+id/onBoardFragment"
@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_onBoardFragment_to_notFragment"
             app:destination="@id/notFragment" />
+        <action
+            android:id="@+id/action_onBoardFragment_to_signFragment"
+            app:destination="@id/signFragment" />
     </fragment>
     <fragment
         android:id="@+id/onBoardPagingFragment"
@@ -37,4 +40,9 @@
             android:name="noteId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/signFragment"
+        android:name="com.ex.notapp.ui.SignFragments.SignFragment"
+        android:label="fragment_sign"
+        tools:layout="@layout/fragment_sign" />
 </navigation>

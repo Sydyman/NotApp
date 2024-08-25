@@ -12,19 +12,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.ex.notapp.R
-import com.ex.notapp.R.color.black2
 import com.ex.notapp.data.models.NoteModel
 import com.ex.notapp.databinding.FragmentDetailBinding
 import com.ex.notapp.utills.App
 import java.util.Date
 import java.util.Locale
 
-
 class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
     private var noteId: Int = -1
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +36,6 @@ class DetailFragment : Fragment() {
         updateNote()
         setUpListeners()
         getRealTime()
-
     }
 
     private fun updateNote() {
@@ -57,7 +53,6 @@ class DetailFragment : Fragment() {
         }
     }
 
-
     @SuppressLint("ResourceAsColor")
     private fun setUpListeners() {
         binding.txtReady.setOnClickListener {
@@ -71,7 +66,9 @@ class DetailFragment : Fragment() {
             }
             val fragmentColor = String.format("#%06X", (0xFFFFFF and color))
             if (noteId != -1) {
-                App.appDatabase?.noteDao()?.updateNote(NoteModel(etTitle, etDescription, fragmentColor))
+                val updateNote = NoteModel(etTitle, etDescription, fragmentColor)
+                updateNote.id = noteId
+                App.appDatabase?.noteDao()?.updateNote(updateNote)
             } else {
                 App.appDatabase?.noteDao()?.insert(NoteModel(etTitle, etDescription, fragmentColor))
             }
@@ -95,13 +92,11 @@ class DetailFragment : Fragment() {
     }
 
     private fun getRealTime() {
-        val dateFormat = SimpleDateFormat("day, week", Locale.getDefault())
-        val timeFormat = SimpleDateFormat("H:m", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("EEEE, MMMM d", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("H:mm", Locale.getDefault())
         val currentDate = dateFormat.format(Date())
         val currentTime = timeFormat.format(Date())
         binding.txtTime.text = currentTime
         binding.txtDate.text = currentDate
     }
-
-
 }
