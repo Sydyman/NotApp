@@ -1,4 +1,4 @@
-package com.ex.notapp.ui.activity.adapter
+package com.ex.notapp.adapter
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.ex.notapp.ui.fragments.onboard.onBoardPagingFragment
 import com.ex.notapp.ui.fragments.onboard.onBoardPagingFragment.Companion.ARG_ONBOARD_POSITION
 
-class onBoardAdapter(fragment: Fragment):FragmentStateAdapter(fragment) {
+class onBoardAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
         return 3
     }
