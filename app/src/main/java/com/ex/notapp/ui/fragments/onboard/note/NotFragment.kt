@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,12 +19,15 @@ import com.ex.notapp.databinding.FragmentNotBinding
 import com.ex.notapp.interfaces.OnClickItem
 import com.ex.notapp.utills.App
 import com.ex.notapp.utills.PreferenceHelper
+import com.google.android.material.navigation.NavigationView
 
 class NotFragment : Fragment(), OnClickItem {
 
     private lateinit var binding: FragmentNotBinding
     private var noteAdapter = NoteAdapter(this, this)
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var navView: NavigationView
+    private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +43,7 @@ class NotFragment : Fragment(), OnClickItem {
         initialize()
         getData()
         setUpListeners()
+        drawerNavigation()
     }
 
     private fun initialize() {
@@ -100,4 +106,32 @@ class NotFragment : Fragment(), OnClickItem {
         val action = NotFragmentDirections.actionNotFragmentToDetailFragment(noteModel.id)
         findNavController().navigate(action)
     }
-}
+    private fun drawerNavigation() {
+        val drawerLayout = binding.drawerLayout
+        val navView = binding.navView
+
+        binding.drawer.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home-> {
+                    findNavController().navigate(R.id.signFragment)
+
+                }
+                R.id.nav_note -> {
+                    findNavController().navigate(R.id.notFragment)
+
+                }
+                R.id.nav_messages -> {
+                    findNavController().navigate(R.id.chatFragment)
+
+                }
+            }
+            drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
+    }
+    }
+
