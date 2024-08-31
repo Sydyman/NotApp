@@ -17,10 +17,9 @@ class onBoardPagingFragment : Fragment() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentOnBoardPagingBinding.inflate(inflater,container,false)
+        binding = FragmentOnBoardPagingBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -29,13 +28,14 @@ class onBoardPagingFragment : Fragment() {
         initiliaze()
 
     }
+
     companion object {
         const val ARG_ONBOARD_POSITION = "arg_onboard_position"
 
     }
 
     private fun initiliaze() = with(binding) {
-        when(requireArguments().getInt(ARG_ONBOARD_POSITION)) {
+        when (requireArguments().getInt(ARG_ONBOARD_POSITION)) {
             0 -> {
                 tvFirst.text = "Очень удобный функционал"
                 lottieView.setAnimation("lottie1.json")
@@ -46,7 +46,7 @@ class onBoardPagingFragment : Fragment() {
 
 
             1 -> {
-              tvFirst.text = "Быстрый, качественный продукт"
+                tvFirst.text = "Быстрый, качественный продукт"
                 lottieView.setAnimation("lottie2.json")
                 lottieView.repeatCount = LottieDrawable.INFINITE
                 lottieView.playAnimation()
@@ -54,11 +54,10 @@ class onBoardPagingFragment : Fragment() {
             }
 
             2 -> {
-              tvFirst.text = "Куча функций и интересных фишек"
+                tvFirst.text = "Куча функций и интересных фишек"
                 lottieView.setAnimation("lottie3.json")
                 lottieView.repeatCount = LottieDrawable.INFINITE
                 lottieView.playAnimation()
-
 
 
             }
